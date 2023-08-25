@@ -1,0 +1,35 @@
+{
+    "$schema": "../../../system/schema/extend.json",
+    "name": "ReCaptcha",
+    "description": "Protect forms by using the Google reCaptcha API",
+    "version": "1.0.0",
+    "environment": {
+        "system": "^8.0"
+    },
+    "authors": [
+        {"name": "Friends of Sunlight CMS", "url": "https://github.com/friends-of-sunlight-cms/"}
+    ],
+    "config_defaults": {
+        "site_key": null,
+        "secret_key": null,
+        "use_curl": false,
+        "use_recaptcha_v3": false,
+        "score_treshold": 0.5
+    },
+    "actions": {
+        "config": "ConfigAction"
+    },
+    "langs": {
+        "recaptcha": "lang"
+    },
+    "events": [
+        {"event": "core.ready", "script": "event/core_ready.php"},
+        {"event": "captcha.init", "script": "event/captcha_init.php", "group": "recaptcha"},
+        {"event": "captcha.check", "script": "event/captcha_check.php", "group": "recaptcha"}
+    ],
+    "events.web": [
+        {"event": "tpl.head", "script": "event/head_assets.php", "group": "recaptcha"},
+        {"event": "form.output", "script": "event/form_append.php", "group": "recaptcha-v3"}
+    ],
+    "events.admin": []
+}

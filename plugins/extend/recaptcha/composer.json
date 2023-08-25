@@ -1,0 +1,10 @@
+{
+  "require": {
+    "google/recaptcha": "~1.2.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "ReCaptcha\\": "class"
+    }
+  }
+}
