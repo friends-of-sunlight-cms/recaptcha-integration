@@ -10,34 +10,32 @@ class ConfigAction extends BaseConfigAction
 {
     protected function getFields(): array
     {
+        $config = $this->plugin->getConfig();
+
         return [
             'site_key' => [
                 'label' => _lang('recaptcha.site_key'),
-                'input' => $this->createInput('text', 'site_key'),
-                'type' => 'text'
+                'input' => '<input type="text" name="config[site_key]" value="' . Form::restorePostValue('site_key', $config['site_key'], false) . '">',
+                'type' => 'text',
             ],
             'secret_key' => [
                 'label' => _lang('recaptcha.secret_key'),
-                'input' => $this->createInput('text', 'secret_key'),
-                'type' => 'text'
+                'input' => '<input type="text" name="config[secret_key]" value="' . Form::restorePostValue('secret_key', $config['secret_key'], false) . '">',
+                'type' => 'text',
             ],
             'use_curl' => [
                 'label' => _lang('recaptcha.use_curl'),
-                'input' => $this->createInput('checkbox', 'use_curl'),
+                'input' => '<input type="checkbox" name="config[use_curl]" value="1"' . Form::activateCheckbox($config['use_curl']) . '>',
                 'type' => 'checkbox'
             ],
             'use_recaptcha_v3' => [
                 'label' => _lang('recaptcha.use_recaptcha_v3'),
-                'input' => $this->createInput('checkbox', 'use_recaptcha_v3'),
+                'input' => '<input type="checkbox" name="config[use_recaptcha_v3]" value="1"' . Form::activateCheckbox($config['use_recaptcha_v3']) . '>',
                 'type' => 'checkbox'
             ],
             'score_treshold' => [
                 'label' => _lang('recaptcha.score_treshold'),
-                'input' => $this->createInput('number', 'score_treshold', [
-                    'step' => 0.1,
-                    'min' => 0,
-                    'max' => 1
-                ]),
+                'input' => '<input type="number" name="config[score_treshold]" min="0" max="1" step="0.1" value="' . Form::restorePostValue('score_treshold', $config['score_treshold'], false) . '" class="inputsmall">',
             ],
         ];
     }
@@ -51,25 +49,5 @@ class ConfigAction extends BaseConfigAction
             return null;
         }
         return parent::mapSubmittedValue($config, $key, $field, $value);
-    }
-
-    private function createInput(string $type, string $name, $attributes = null): string
-    {
-        $attr = [];
-        if (is_array($attributes)) {
-            foreach ($attributes as $k => $v) {
-                if (is_int($k)) {
-                    $attr[] = $v . '=' . $v;
-                } else {
-                    $attr[] = $k . '=' . $v;
-                }
-            }
-        }
-        if ($type === 'checkbox') {
-            $result = '<input type="checkbox" name="config[' . $name . ']" value="1"' . implode(' ', $attr) . Form::activateCheckbox($this->plugin->getConfig()->offsetGet($name)) . '>';
-        } else {
-            $result = '<input type="' . $type . '" name="config[' . $name . ']" value="' . $this->plugin->getConfig()->offsetGet($name) . '"' . implode(' ', $attr) . '>';
-        }
-        return $result;
     }
 }

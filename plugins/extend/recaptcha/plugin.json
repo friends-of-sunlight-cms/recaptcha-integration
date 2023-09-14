@@ -30,6 +30,5 @@
     "events.web": [
         {"event": "tpl.head", "script": "event/head_assets.php", "group": "recaptcha"},
         {"event": "form.output", "script": "event/form_append.php", "group": "recaptcha-v3"}
-    ],
-    "events.admin": []
+    ]
 }
